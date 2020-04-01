@@ -10,73 +10,55 @@ package spaceinvaders;
  *
  * @author antoniomejorado
  */
-import javax.swing.ImageIcon;
-import java.awt.event.KeyEvent;
+import java.awt.Graphics;
 
-public class Player extends Sprite {
+public class Player extends Item {
 
-    private int width;
-
-    public Player() {
-
-        initPlayer();
+    private int direction;
+    private Board board;
+  
+    public Player(int x, int y, int direction, int width, int height, Board board) {
+        super(x, y, width, height);
+        this.direction = direction;
+        this.board = board;
     }
-
-    private void initPlayer() {
 
  
-        setImage(loadImage("/resources/player.png"));
-        width = getImage().getWidth();
-
-        int START_X = 270;
-        setX(START_X);
-
-        int START_Y = 280;
-        setY(START_Y);
+    public int getDirection() {
+        return direction;
     }
 
-    public void act() {
 
-        x += dx;
-
-        if (x <= 2) {
-
-            x = 2;
-        }
-
-        if (x >= Commons.BOARD_WIDTH - 2 * width) {
-
-            x = Commons.BOARD_WIDTH - 2 * width;
-        }
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 
-    public void keyPressed(KeyEvent e) {
-
-        int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_LEFT) {
-
-            dx = -2;
+    @Override
+    public void tick() {
+        // moving player depending on flags
+        if (board.getKeyManager().left) {
+           setX(getX() - 2);
         }
-
-        if (key == KeyEvent.VK_RIGHT) {
-
-            dx = 2;
+        if (board.getKeyManager().right) {
+           setX(getX() + 2);
+        }
+        // reset x position and y position if colision
+        if (getX() + 60 >= board.getWidth()) {
+            setX(board.getWidth() - 60);
+        }
+        else if (getX() <= -30) {
+            setX(-30);
+        }
+        if (getY() + 80 >= board.getHeight()) {
+            setY(board.getHeight() - 80);
+        }
+        else if (getY() <= -20) {
+            setY(-20);
         }
     }
-
-    public void keyReleased(KeyEvent e) {
-
-        int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_LEFT) {
-
-            dx = 0;
-        }
-
-        if (key == KeyEvent.VK_RIGHT) {
-
-            dx = 0;
-        }
+    
+    @Override
+    public void render(Graphics g) {
+        g.drawImage(Assets.player, getX(), getY(), getWidth(), getHeight(), null);
     }
 }
