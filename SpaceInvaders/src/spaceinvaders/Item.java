@@ -21,6 +21,8 @@ public abstract class Item {
     protected int y;        // to store y position
     protected int width;
     protected int height;
+    private boolean visible;
+    private boolean dying;
     
     /**
      * Set the initial values to create the item
@@ -32,6 +34,8 @@ public abstract class Item {
         this.y = y;
         this.width = width;
         this.height = height;
+        visible = true;
+
     }
 
     /**
@@ -102,5 +106,25 @@ public abstract class Item {
             status = rItem.intersects(rOther);
         }
         return status;    
+    }
+    
+    public void die() {
+
+        visible = false;
+    }
+
+    public boolean isVisible() {
+
+        return visible;
+    }
+    
+    public void setDying(boolean dying) {
+
+        this.dying = dying;
+    }
+
+    public boolean isDying() {
+
+        return this.dying;
     }
 }

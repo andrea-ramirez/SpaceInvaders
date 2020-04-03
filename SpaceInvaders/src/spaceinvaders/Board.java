@@ -95,9 +95,8 @@ public class Board implements Runnable {
 
     private void init() {
         display = new Display(title, getWidth(), getHeight());
-        display.getJframe().addKeyListener(keyManager);
+        Assets.init();
         d = new Dimension(Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
-        setBackground(Color.black);
         aliens = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
@@ -110,7 +109,6 @@ public class Board implements Runnable {
         player = new Player(0, getHeight() - 100, 1, 100, 100, this);
         shot = new Shot();
         display.getJframe().addKeyListener(keyManager);
-        gameInit();
     }
     
     @Override
@@ -269,18 +267,16 @@ public class Board implements Runnable {
             int playerX = player.getX();
             int playerY = player.getY();
 
-            if (player.isVisible() && !bomb.isDestroyed()) {
+           
 
                 if (bombX >= (playerX)
                         && bombX <= (playerX + Commons.PLAYER_WIDTH)
                         && bombY >= (playerY)
                         && bombY <= (playerY + Commons.PLAYER_HEIGHT)) {
 
-                    player.setImage(player.loadImage("/resources/explosion.png"));
-                    player.setDying(true);
                     bomb.setDestroyed(true);
                 }
-            }
+            
 
             if (!bomb.isDestroyed()) {
 
@@ -315,26 +311,6 @@ public class Board implements Runnable {
 
     }
 
-
-    private void gameInit() {
-
-        aliens = new ArrayList<>();
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 6; j++) {
-
-                Alien alien = new Alien(Commons.ALIEN_INIT_X + 18 * j,
-                        Commons.ALIEN_INIT_Y + 18 * i);
-                aliens.add(alien);
-            }
-        }
-
-        player = new Player();
-        shot = new Shot();
-        display.getJframe().addKeyListener(keyManager);
-
-    }
-
     private void drawAliens(Graphics g) {
 
         for (Alien alien : aliens) {
@@ -351,69 +327,6 @@ public class Board implements Runnable {
         }
     }
 
-    private void drawPlayer(Graphics g) {
-
-        if (player.isVisible()) {
-
-            g.drawImage(player.getImage(), player.getX(), player.getY(), this);
-        }
-
-        if (player.isDying()) {
-
-            player.die();
-            inGame = false;
-        }
-    }
-
-    private void drawShot(Graphics g) {
-
-        if (shot.isVisible()) {
-
-            g.drawImage(shot.getImage(), shot.getX(), shot.getY(), this);
-        }
-    }
-
-    private void drawBombing(Graphics g) {
-
-        for (Alien a : aliens) {
-
-            Alien.Bomb b = a.getBomb();
-
-            if (!b.isDestroyed()) {
-
-                g.drawImage(b.getImage(), b.getX(), b.getY(), this);
-            }
-        }
-    }
-
-    private void doDrawing(Graphics g) {
-
-        g.setColor(Color.black);
-        g.fillRect(0, 0, d.width, d.height);
-        g.setColor(Color.green);
-
-        if (inGame) {
-
-            g.drawLine(0, Commons.GROUND,
-                    Commons.BOARD_WIDTH, Commons.GROUND);
-
-            drawAliens(g);
-            drawPlayer(g);
-            drawShot(g);
-            drawBombing(g);
-
-        } else {
-
-            if (timer.isRunning()) {
-                timer.stop();
-            }
-
-            gameOver(g);
-        }
-
-        Toolkit.getDefaultToolkit().sync();
-    }
-
     private void gameOver(Graphics g) {
 
         g.setColor(Color.black);
@@ -425,16 +338,9 @@ public class Board implements Runnable {
         g.drawRect(50, Commons.BOARD_WIDTH / 2 - 30, Commons.BOARD_WIDTH - 100, 50);
 
         Font small = new Font("Helvetica", Font.BOLD, 14);
-        FontMetrics fontMetrics = this.getFontMetrics(small);
-
+        
         g.setColor(Color.white);
         g.setFont(small);
-        g.drawString(message, (Commons.BOARD_WIDTH - fontMetrics.stringWidth(message)) / 2,
-                Commons.BOARD_WIDTH / 2);
-    }
-
-    private void update() {
-
     }
 
      /**
@@ -461,4 +367,5 @@ public class Board implements Runnable {
             }
         }
     }
+
 }
