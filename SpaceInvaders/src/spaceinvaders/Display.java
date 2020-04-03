@@ -1,4 +1,3 @@
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,13 +5,12 @@
  */
 package spaceinvaders;
 
-
 import java.awt.Canvas;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 /**
  *
- * @author diego
+ * @author Diego Garza y Andrea Ramírez
  */
 public class Display {
     private JFrame jframe;  // this is the app class

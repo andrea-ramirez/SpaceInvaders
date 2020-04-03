@@ -10,13 +10,34 @@ package spaceinvaders;
  *
  * @author antoniomejorado
  */
+import java.awt.EventQueue;
+import javax.swing.JFrame;
 
+public class SpaceInvaders extends JFrame  {
 
-public class SpaceInvaders  {
-       public static void main(String[] args) {
-        // TODO code application logic here
-        Board g = new Board("Juego", 800, 500);
-        g.start();
+    public SpaceInvaders() {
+
+        initUI();
     }
-    
+
+    private void initUI() {
+
+        add(new Board());
+
+        setTitle("Space Invaders");
+        setSize(Commons.BOARD_WIDTH, Commons.BOARD_HEIGHT);
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
+        setLocationRelativeTo(null);
+    }
+
+    public static void main(String[] args) {
+
+        EventQueue.invokeLater(() -> {
+
+            SpaceInvaders ex = new SpaceInvaders();
+            ex.setVisible(true);
+        });
+    }
 }
